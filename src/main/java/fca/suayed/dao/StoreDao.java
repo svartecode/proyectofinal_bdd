@@ -1,0 +1,24 @@
+package fca.suayed.dao;
+
+import fca.suayed.dto.ProductDto;
+import fca.suayed.dto.ClientDto;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
+import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+
+import java.util.List;
+
+public interface StoreDao {
+    
+    @RegisterBeanMapper(ProductDto.class)
+    @SqlQuery("SELECT id_producto, nombre as name, descripcion as description, precio as price, stock, id_categoria as idCategoria, sku FROM productos")
+    List<ProductDto> getProducts();
+    
+    @SqlUpdate("INSERT INTO productos (nombre, descripcion, precio, stock, sku, id_categoria) VALUES(:name, :description, :price, :stock, :sku, :idCategoria)")
+    void addProduct(@BindBean ProductDto productDto);
+    
+    @RegisterBeanMapper(ClientDto.class)
+    @SqlQuery("SELECT id, nombre, apellido_paterno as apellidoPaterno, apellido_materno as apellidoMaterno, rfc FROM clientes")
+    List<ClientDto> getClients();
+}
